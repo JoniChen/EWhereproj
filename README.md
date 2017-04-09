@@ -2,7 +2,7 @@
 UI test script for eWhere app
 
 For running - 
-download the project and open 
+download the project and open - /srcmain/java/ - for the main test file 
 
 # Environment 
 Written in intellij idea using Xcode 8.3 and Appium 1.6.4
@@ -29,3 +29,5 @@ since the driver doesnt respond until this message is released.
 I checked on several systems and this issue came up - so it must be an issue with the developers code.
 
 Scroll is unstable in appium beta version 
+
+I was not able to access and verify text
