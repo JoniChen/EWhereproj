@@ -33,15 +33,12 @@ public class TestMain {
     @BeforeClass(alwaysRun = true)
     public static void startSim() throws MalformedURLException {
 
-        File app = new File ("/Users/aliaksandr/IdeaProjects/bytestnovik/src/main/resources/e-Where.app");
+        File app = new File ("/Users/joninow/Desktop/e-Where.app");
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, "iOS");
         capabilities.setCapability("automationName", "XCUITest");
         capabilities.setCapability("platformName", "iOS");
-        //  capabilities.setCapability("bundleId", "SMWarren.e-Where");
-//	capabilities.setCapability("fullReset", true);
         capabilities.setCapability("deviceName", "iPhone SE");
-//	capabilities.setCapability("realDeviceLogger", "idevicesyslog");
         capabilities.setCapability("platformVersion", "10.3");
         //capabilities.setCapability("UDID", "72857EAF-0734-482C-B593-C2197368411D");
         capabilities.setCapability("app", app.getAbsolutePath());
@@ -53,45 +50,72 @@ public class TestMain {
     @Test
     public void test01() throws InterruptedException {
 
-        //Home viewd
-        //String textObjects = driver.findElement(By.className("Text")).getText();
-        //assertTrue(textObjects.contains("eWhere"));
-//		driver.findElement(MobileBy.AccessibilityId("Events")).click();
-//		driver.findElement(MobileBy.AccessibilityId("Home")).click();
-//		WebElement button1 = driver.findElement(By.xpath("//XCUIElementTypeApplication[1]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeNavigationBar[1]/XCUIElementTypeButton[1]"));
+        //Home view
 
-        WebElement eventElement =driver.findElementsByName("Events").get(0);
-        eventElement.click();
+        //Check click
+        WebElement homeElement = driver.findElementsByName("Home").get(0);
 
-        Assert.assertEquals(eventElement.getText(),"Events");
-
-        WebElement button1 = driver.findElement(By.name("Events"));
-
-        TouchAction newTouch = new TouchAction(driver);
-        newTouch.press(button1);
-
+        // Check scroll
+        scroll(driver , "down");
+        scroll(driver , "down");
+        scroll(driver , "down");
+        scroll(driver, "up");
         scroll(driver, "up");
 
-//		driver.findElement(By.id("Discover")).click();
-//		driver.findElement(By.id("Inbox")).click();
-//		driver.findElement(By.id("Settings")).click();
+        //Check button label
+        Assert.assertEquals(homeElement.getText(), "Home");
+
+        //Events
+        WebElement eventElement =driver.findElementsByName("Events").get(0);
+        eventElement.click();
+        //Check page scroll
+        scroll(driver , "down");
+        scroll(driver , "down");
+        scroll(driver , "down");
+        scroll(driver, "up");
+        scroll(driver, "up");
+        //check button label
+        Assert.assertEquals(eventElement.getText(), "Events");
+        //Check press on music event
+        TouchAction tap = new TouchAction(driver);
+        tap.press(360 , 246);
+        wait(100);
+        driver.findElementsByName("Events").get(0).click();
+        //check press on video event
+        tap.press(360, 566);
+        wait(100);
+        driver.findElementsByName("Events").get(0).click();
+
+        //Discover
+        WebElement discoverElement = driver.findElementsByName("Discover").get(0);
+        discoverElement.click();
+        //Check page scroll
+        scroll(driver, "down");
+        scroll(driver , "up");
+        //check button label
+        Assert.assertEquals(discoverElement.getText() , "Discover");
+
+        //Inbox
+        driver.findElementsByName("Inbox").get(0).click();
+
+        //Settings
+        driver.findElementsByName("Settings").get(0).click();
+        scroll(driver, "down");
+
+
+
+
+
 
 
 
     }
-
-    //"up" & "down" gestured worked the "left" & "right"
 
     public void scroll(IOSDriver driver , String direction){
         JavascriptExecutor js= (JavascriptExecutor) driver;
         HashMap scrollObject = new HashMap();
         scrollObject.put("direction", direction);
-        js.executeScript("mobile: scroll", scrollObject);
-    }
-
-    private long for_text(String string) {
-        // TODO Auto-generated method stub
-        return 0;
+        js.executeScript("mobile: swipe", scrollObject);
     }
 
     @AfterClass
